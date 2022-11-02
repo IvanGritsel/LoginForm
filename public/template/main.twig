@@ -1,0 +1,58 @@
+<head>
+    <title>
+        {% block title %} {{ pageTitle }} {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootstrap5.ru/css/docs.css">
+    <link rel="stylesheet" href="/../css/styles.css">
+</head>
+<body class="body">
+{% block body %}
+    {% block body_container_main_content %}
+        <div class="headerCard">
+            {% if invalid %}
+                <h3 style="margin: 10px">Invalid login or password</h3>
+            {% endif %}
+            <form action="/">
+                {% if loggedIn %}
+                    <button style="margin: 10px" type="submit" class="btn btn-outline-info">Logout</button>
+                {% else %}
+                    <button style="margin: 10px" type="submit" disabled class="btn btn-outline-dark">Logout</button>
+                {% endif %}
+            </form>
+
+        </div>
+        <div class="formContainer">
+            {% if loggedIn %}
+                <h2>Welcome back, {{ name }}</h2>
+            {% else %}
+                <form style="margin: 10px" method="POST" action="../handlers/loginHandler.php">
+                    <label for="login">Login: </label>
+                    <input id="login" onchange="checkFields()" name="login" type="email">
+                    <label for="password">Password:</label>
+                    <input id="password" onchange="checkFields()" name="password" type="password">
+                    <button id="submit" type="submit" disabled class="btn btn-outline-dark">Submit</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endblock %}
+{% endblock %}
+<script type="text/javascript">
+    function checkFields() {
+        let loginField = document.getElementById('login');
+        let passwordField = document.getElementById('password');
+        let button = document.getElementById('submit');
+        if (loginField.value !== '' && passwordField.value !== '') {
+            button.disabled = false;
+            button.classList.remove('btn-outline-dark');
+            button.classList.add('btn-outline-success');
+        } else {
+            button.disabled = true;
+            button.classList.add('btn-outline-dark');
+            button.classList.remove('btn-outline-success');
+        }
+    }
+</script>
+</body>
